@@ -1,0 +1,22 @@
+{% load menu_tag %}
+{% draw_menu 'main_menu' as menu %}
+
+
+<ul>
+  {% for item in menu.menuitem_set.all %}
+    {% if not item.parent %}
+      <li class="{% if item.url == request.path %}active{% endif %}">
+        <a href="{{ item.url }}">{{ item.title }}</a>
+        {% if item.children.exists %}
+          <ul>
+            {% for child in item.children.all %}
+              <li class="{% if child.url == request.path %}active{% endif %}">
+                {{ child.title }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>
